@@ -1,0 +1,6 @@
+title: STEM Homework Help
+description: Worked solutions to unanswered math, physics, and chemistry problems
+theme: minima
+permalink: pretty
+plugins:
+  - jekyll-sitemap
