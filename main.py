@@ -1,0 +1,176 @@
+import os
+import json
+import time
+import datetime
+import re
+import requests
+from google import genai
+
+# ── Config ────────────────────────────────────────────────────────────────
+SITE = "math"  # swap to "physics", "chemistry", or "stats" for sibling jobs
+STATE_FILE = f"processed_questions_{SITE}.json"
+POSTS_DIR = "_posts"
+QUESTIONS_PER_RUN = 1
+AFFILIATE_LINK = "https://www.amazon.com/YOUR-ASSOCIATE-TAG"  # swap in real tag
+GEMINI_MODEL = "gemini-flash-latest"
+
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+
+# ── State (dedupe) ───────────────────────────────────────────────────────
+def load_processed():
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE, "r") as f:
+            return set(json.load(f))
+    return set()
+
+
+def save_processed(ids):
+    with open(STATE_FILE, "w") as f:
+        json.dump(sorted(ids), f, indent=2)
+
+
+# ── Fetch unanswered questions from Stack Exchange ──────────────────────
+def get_unanswered_questions(site, exclude_ids, limit=20):
+    url = "https://api.stackexchange.com/2.3/questions/unanswered"
+    params = {
+        "order": "desc",
+        "sort": "votes",
+        "site": site,
+        "filter": "withbody",
+        "pagesize": limit,
+    }
+    resp = requests.get(url, params=params, timeout=30)
+    resp.raise_for_status()
+    items = resp.json().get("items", [])
+    candidates = [q for q in items if q["question_id"] not in exclude_ids]
+    return candidates
+
+
+# ── Generate a worked solution with retry/backoff ───────────────────────
+def generate_solution(question, max_attempts=3):
+    prompt = f"""You are an expert mathematics tutor. A student posted this problem
+and never received an answer:
+
+Title: {question['title']}
+Body: {strip_html(question['body'])[:2000]}
+
+Write a complete worked solution in Markdown:
+1. Restate what's being asked in plain language
+2. Show every algebraic/logical step, don't skip steps
+3. State the final answer clearly
+4. Add a short "Common Mistakes" section for this problem type
+
+Do not include a closing resources section — that will be added separately."""
+
+    for attempt in range(1, max_attempts + 1):
+        try:
+            response = client.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=prompt,
+            )
+            return response.text
+        except Exception as e:
+            if attempt == max_attempts:
+                print(f"Generation failed after {max_attempts} attempts: {e}")
+                return None
+            wait = 2 ** attempt
+            print(f"Attempt {attempt} failed ({e}), retrying in {wait}s...")
+            time.sleep(wait)
+    return None
+
+
+def strip_html(text):
+    return re.sub(r"<[^>]+>", "", text or "")
+
+
+def slugify(title):
+    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+    return slug[:80]
+
+
+# ── Build and write the Jekyll post ─────────────────────────────────────
+def write_post(question, solution_body):
+    date = datetime.date.today().isoformat()
+    slug = slugify(question["title"])
+    filename = f"{POSTS_DIR}/{date}-{slug}.md"
+
+    # Amazon policy (as of the April 2026 update) requires the exact disclosure
+    # phrase to appear ABOVE the first affiliate link, not buried at the bottom.
+    disclosure_and_link = (
+        "*As an Amazon Associate, I earn from qualifying purchases.* "
+        f"For more practice problems like this, see [this textbook]({AFFILIATE_LINK}).\n\n"
+        "---\n\n"
+    )
+
+    attribution = (
+        f"\n\n*Original question: [{question['title']}]({question['link']}) "
+        "on Mathematics Stack Exchange, licensed CC BY-SA.*\n"
+    )
+
+    front_matter = (
+        "---\n"
+        "layout: post\n"
+        f"title: \"{question['title'].replace(chr(34), chr(39))}\"\n"
+        "author: StemFix Bot\n"
+        "category: stem-homework\n"
+        "tags: []\n"
+        "---\n\n"
+    )
+
+    # Disclosure + affiliate link now come first, immediately after front matter
+    # and before the solution body, satisfying "above the first link" placement.
+    content = front_matter + disclosure_and_link + solution_body + attribution
+
+    os.makedirs(POSTS_DIR, exist_ok=True)
+    with open(filename, "w") as f:
+        f.write(content)
+
+    return filename
+
+
+# ── IndexNow ping ────────────────────────────────────────────────────────
+def ping_indexnow(url, key):
+    try:
+        requests.get(
+            "https://api.indexnow.org/indexnow",
+            params={"url": url, "key": key},
+            timeout=10,
+        )
+    except Exception as e:
+        print(f"IndexNow ping failed (non-fatal): {e}")
+
+
+# ── Main ─────────────────────────────────────────────────────────────────
+def main():
+    processed = load_processed()
+    candidates = get_unanswered_questions(SITE, processed)
+
+    if not candidates:
+        print("No new unanswered questions found.")
+        return
+
+    written = []
+    for question in candidates[:QUESTIONS_PER_RUN]:
+        solution = generate_solution(question)
+        if solution is None:
+            continue  # skip, do NOT mark as processed — retry next run
+        filename = write_post(question, solution)
+        written.append(filename)
+        processed.add(question["question_id"])
+        print(f"Wrote {filename}")
+
+    if written:
+        save_processed(processed)
+        site_url = os.environ.get("SITE_URL", "").rstrip("/")
+        indexnow_key = os.environ.get("INDEXNOW_KEY")
+        if site_url and indexnow_key:
+            for f in written:
+                slug = os.path.basename(f).replace(".md", "")
+                ping_indexnow(f"{site_url}/{slug}/", indexnow_key)
+    else:
+        print("No posts written this run.")
+
+
+if __name__ == "__main__":
+    main()
