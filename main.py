@@ -5,6 +5,7 @@ import datetime
 import re
 import requests
 from google import genai
+from groq import Groq
 
 # ── Config ────────────────────────────────────────────────────────────────
 SITE = "math"  # swap to "physics", "chemistry", or "stats" for sibling jobs
@@ -12,9 +13,11 @@ STATE_FILE = f"processed_questions_{SITE}.json"
 POSTS_DIR = "_posts"
 QUESTIONS_PER_RUN = 1
 AFFILIATE_LINK = "https://www.amazon.com/YOUR-ASSOCIATE-TAG"  # swap in real tag
-GEMINI_MODEL = "gemini-flash-latest"
+GEMINI_MODEL = "gemini-flash-lite-latest"  # self-updating alias, avoids retirement breakage
+GROQ_MODEL = "openai/gpt-oss-120b"
 
-client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+groq_client = Groq(api_key=os.environ["GROQ_API_KEY"]) if os.environ.get("GROQ_API_KEY") else None
 
 
 # ── State (dedupe) ───────────────────────────────────────────────────────
@@ -47,9 +50,8 @@ def get_unanswered_questions(site, exclude_ids, limit=20):
     return candidates
 
 
-# ── Generate a worked solution with retry/backoff ───────────────────────
-def generate_solution(question, max_attempts=3):
-    prompt = f"""You are an expert mathematics tutor. A student posted this problem
+def build_prompt(question):
+    return f"""You are an expert mathematics tutor. A student posted this problem
 and never received an answer:
 
 Title: {question['title']}
@@ -63,21 +65,54 @@ Write a complete worked solution in Markdown:
 
 Do not include a closing resources section — that will be added separately."""
 
+
+# ── Groq attempt (primary) ───────────────────────────────────────────────
+def try_groq(prompt, max_attempts=2, max_wait=8):
+    if groq_client is None:
+        return None
     for attempt in range(1, max_attempts + 1):
         try:
-            response = client.models.generate_content(
+            resp = groq_client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            return resp.choices[0].message.content
+        except Exception as e:
+            # Cap any retry-after style wait — never sleep past max_wait.
+            wait = min(2 ** attempt, max_wait)
+            print(f"Groq attempt {attempt} failed ({e})")
+            if attempt == max_attempts:
+                print("Groq exhausted, falling back to Gemini...")
+                return None
+            time.sleep(wait)
+    return None
+
+
+# ── Gemini attempt (fallback) ────────────────────────────────────────────
+def try_gemini(prompt, max_attempts=2, max_wait=8):
+    for attempt in range(1, max_attempts + 1):
+        try:
+            response = gemini_client.models.generate_content(
                 model=GEMINI_MODEL,
                 contents=prompt,
             )
             return response.text
         except Exception as e:
+            wait = min(2 ** attempt, max_wait)
+            print(f"Gemini attempt {attempt} failed ({e})")
             if attempt == max_attempts:
-                print(f"Generation failed after {max_attempts} attempts: {e}")
+                print("Gemini exhausted too — skipping this question, will retry next run.")
                 return None
-            wait = 2 ** attempt
-            print(f"Attempt {attempt} failed ({e}), retrying in {wait}s...")
             time.sleep(wait)
     return None
+
+
+def generate_solution(question):
+    prompt = build_prompt(question)
+    solution = try_groq(prompt)
+    if solution is None:
+        solution = try_gemini(prompt)
+    return solution
 
 
 def strip_html(text):
@@ -95,8 +130,6 @@ def write_post(question, solution_body):
     slug = slugify(question["title"])
     filename = f"{POSTS_DIR}/{date}-{slug}.md"
 
-    # Amazon policy (as of the April 2026 update) requires the exact disclosure
-    # phrase to appear ABOVE the first affiliate link, not buried at the bottom.
     disclosure_and_link = (
         "*As an Amazon Associate, I earn from qualifying purchases.* "
         f"For more practice problems like this, see [this textbook]({AFFILIATE_LINK}).\n\n"
@@ -118,8 +151,6 @@ def write_post(question, solution_body):
         "---\n\n"
     )
 
-    # Disclosure + affiliate link now come first, immediately after front matter
-    # and before the solution body, satisfying "above the first link" placement.
     content = front_matter + disclosure_and_link + solution_body + attribution
 
     os.makedirs(POSTS_DIR, exist_ok=True)
