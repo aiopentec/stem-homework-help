@@ -1,5 +1,6 @@
 title: STEM Homework Help
-description: Worked solutions to unanswered math, physics, and chemistry problems
+description: Worked solutions to unanswered math, physics, chemistry, and statistics problems
+url: https://stemanswered.com
 theme: minima
 permalink: pretty
 plugins:
