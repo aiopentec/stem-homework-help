@@ -4,6 +4,7 @@ import time
 import datetime
 import re
 import requests
+import yaml
 from google import genai
 from groq import Groq
 
@@ -12,7 +13,25 @@ SITE = os.environ.get("SITE", "math")  # math, physics, chemistry, or stats
 STATE_FILE = f"processed_questions_{SITE}.json"
 POSTS_DIR = "_posts"
 QUESTIONS_PER_RUN = 1
-AMAZON_TAG = "aiopentec20-20"  # your Associates tracking ID
+GEMINI_MODEL = "gemini-flash-lite-latest"  # self-updating alias, avoids retirement breakage
+GROQ_MODEL = "openai/gpt-oss-120b"
+
+SUBJECT_LABELS = {
+    "math": "mathematics",
+    "physics": "physics",
+    "chemistry": "chemistry",
+    "stats": "statistics",
+}
+SE_SITE_NAMES = {
+    "math": "Mathematics Stack Exchange",
+    "physics": "Physics Stack Exchange",
+    "chemistry": "Chemistry Stack Exchange",
+    "stats": "Cross Validated (Stats Stack Exchange)",
+}
+SUBJECT_LABEL = SUBJECT_LABELS.get(SITE, SITE)
+SE_SITE_NAME = SE_SITE_NAMES.get(SITE, "Stack Exchange")
+
+AMAZON_TAG = "aiopentec20-20"  # Associates tracking ID
 
 AFFILIATE_BOOKS = {
     "math": {
@@ -33,30 +52,13 @@ AFFILIATE_BOOKS = {
     },
 }
 
+gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+groq_client = Groq(api_key=os.environ["GROQ_API_KEY"]) if os.environ.get("GROQ_API_KEY") else None
+
 
 def affiliate_link():
     book = AFFILIATE_BOOKS.get(SITE, AFFILIATE_BOOKS["math"])
     return f"https://www.amazon.com/dp/{book['asin']}?tag={AMAZON_TAG}", book["title"]
-GEMINI_MODEL = "gemini-flash-lite-latest"  # self-updating alias, avoids retirement breakage
-GROQ_MODEL = "openai/gpt-oss-120b"
-
-SUBJECT_LABELS = {
-    "math": "mathematics",
-    "physics": "physics",
-    "chemistry": "chemistry",
-    "stats": "statistics",
-}
-SE_SITE_NAMES = {
-    "math": "Mathematics Stack Exchange",
-    "physics": "Physics Stack Exchange",
-    "chemistry": "Chemistry Stack Exchange",
-    "stats": "Cross Validated (Stats Stack Exchange)",
-}
-SUBJECT_LABEL = SUBJECT_LABELS.get(SITE, SITE)
-SE_SITE_NAME = SE_SITE_NAMES.get(SITE, "Stack Exchange")
-
-gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-groq_client = Groq(api_key=os.environ["GROQ_API_KEY"]) if os.environ.get("GROQ_API_KEY") else None
 
 
 # ── State (dedupe) ───────────────────────────────────────────────────────
@@ -181,15 +183,21 @@ def write_post(question, solution_body):
         f"on {SE_SITE_NAME}, licensed CC BY-SA.*\n"
     )
 
-    front_matter = (
-        "---\n"
-        "layout: post\n"
-        f"title: \"{question['title'].replace(chr(34), chr(39))}\"\n"
-        "author: StemFix Bot\n"
-        f"category: {SITE}\n"
-        f"tags: [{SITE}]\n"
-        "---\n\n"
-    )
+    # yaml.safe_dump handles all escaping (backslashes, quotes, colons, LaTeX)
+    # correctly, unlike manual string interpolation. render_with_liquid: false
+    # stops Jekyll's Liquid parser from choking on literal "{%" sequences that
+    # show up in AI-generated LaTeX (e.g. "\boxed{%" wrapped across a line).
+    front_matter_dict = {
+        "layout": "post",
+        "title": question["title"],
+        "author": "StemFix Bot",
+        "category": SITE,
+        "tags": [SITE],
+        "render_with_liquid": False,
+    }
+    front_matter = "---\n" + yaml.safe_dump(
+        front_matter_dict, allow_unicode=True, sort_keys=False
+    ) + "---\n\n"
 
     content = front_matter + disclosure_and_link + solution_body + attribution
 
