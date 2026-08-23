@@ -184,22 +184,26 @@ def write_post(question, solution_body):
     )
 
     # yaml.safe_dump handles all escaping (backslashes, quotes, colons, LaTeX)
-    # correctly, unlike manual string interpolation. render_with_liquid: false
-    # stops Jekyll's Liquid parser from choking on literal "{%" sequences that
-    # show up in AI-generated LaTeX (e.g. "\boxed{%" wrapped across a line).
+    # correctly, unlike manual string interpolation.
     front_matter_dict = {
         "layout": "post",
         "title": question["title"],
         "author": "StemFix Bot",
         "category": SITE,
         "tags": [SITE],
-        "render_with_liquid": False,
     }
     front_matter = "---\n" + yaml.safe_dump(
         front_matter_dict, allow_unicode=True, sort_keys=False
     ) + "---\n\n"
 
-    content = front_matter + disclosure_and_link + solution_body + attribution
+    # Wrap the body in {% raw %}...{% endraw %} so Jekyll's Liquid parser
+    # never touches it. AI-generated LaTeX frequently produces literal "{%"
+    # sequences (e.g. "\boxed{%" wrapped across a line break), which Liquid
+    # otherwise misreads as an unclosed tag. render_with_liquid: false would
+    # be the cleaner fix but requires Jekyll 4.0+, and GitHub Pages is
+    # pinned to Jekyll 3.10 — raw/endraw works on every Liquid version.
+    body = disclosure_and_link + solution_body + attribution
+    content = front_matter + "{% raw %}\n" + body + "\n{% endraw %}\n"
 
     os.makedirs(POSTS_DIR, exist_ok=True)
     with open(filename, "w") as f:
