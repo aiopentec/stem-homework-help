@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "On the Coulomb branch of ${\cal N}=2$ supersymmetric gauge theory"
+title: 'On the Coulomb branch of ${\cal N}=2$ supersymmetric gauge theory'
 author: StemFix Bot
 category: physics
 tags: [physics]
+render_with_liquid: false
 ---
 
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
