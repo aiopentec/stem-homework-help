@@ -8,13 +8,28 @@ from google import genai
 from groq import Groq
 
 # ── Config ────────────────────────────────────────────────────────────────
-SITE = "math"  # swap to "physics", "chemistry", or "stats" for sibling jobs
+SITE = os.environ.get("SITE", "math")  # math, physics, chemistry, or stats
 STATE_FILE = f"processed_questions_{SITE}.json"
 POSTS_DIR = "_posts"
 QUESTIONS_PER_RUN = 1
 AFFILIATE_LINK = "https://www.amazon.com/YOUR-ASSOCIATE-TAG"  # swap in real tag
 GEMINI_MODEL = "gemini-flash-lite-latest"  # self-updating alias, avoids retirement breakage
 GROQ_MODEL = "openai/gpt-oss-120b"
+
+SUBJECT_LABELS = {
+    "math": "mathematics",
+    "physics": "physics",
+    "chemistry": "chemistry",
+    "stats": "statistics",
+}
+SE_SITE_NAMES = {
+    "math": "Mathematics Stack Exchange",
+    "physics": "Physics Stack Exchange",
+    "chemistry": "Chemistry Stack Exchange",
+    "stats": "Cross Validated (Stats Stack Exchange)",
+}
+SUBJECT_LABEL = SUBJECT_LABELS.get(SITE, SITE)
+SE_SITE_NAME = SE_SITE_NAMES.get(SITE, "Stack Exchange")
 
 gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 groq_client = Groq(api_key=os.environ["GROQ_API_KEY"]) if os.environ.get("GROQ_API_KEY") else None
@@ -51,7 +66,7 @@ def get_unanswered_questions(site, exclude_ids, limit=20):
 
 
 def build_prompt(question):
-    return f"""You are an expert mathematics tutor. A student posted this problem
+    return f"""You are an expert {SUBJECT_LABEL} tutor. A student posted this problem
 and never received an answer:
 
 Title: {question['title']}
@@ -59,7 +74,7 @@ Body: {strip_html(question['body'])[:2000]}
 
 Write a complete worked solution in Markdown:
 1. Restate what's being asked in plain language
-2. Show every algebraic/logical step, don't skip steps
+2. Show every step, don't skip any
 3. State the final answer clearly
 4. Add a short "Common Mistakes" section for this problem type
 
@@ -78,7 +93,6 @@ def try_groq(prompt, max_attempts=2, max_wait=8):
             )
             return resp.choices[0].message.content
         except Exception as e:
-            # Cap any retry-after style wait — never sleep past max_wait.
             wait = min(2 ** attempt, max_wait)
             print(f"Groq attempt {attempt} failed ({e})")
             if attempt == max_attempts:
@@ -128,7 +142,8 @@ def slugify(title):
 def write_post(question, solution_body):
     date = datetime.date.today().isoformat()
     slug = slugify(question["title"])
-    filename = f"{POSTS_DIR}/{date}-{slug}.md"
+    # Prefix with SITE so identical dates/slugs across subjects never collide.
+    filename = f"{POSTS_DIR}/{date}-{SITE}-{slug}.md"
 
     disclosure_and_link = (
         "*As an Amazon Associate, I earn from qualifying purchases.* "
@@ -138,7 +153,7 @@ def write_post(question, solution_body):
 
     attribution = (
         f"\n\n*Original question: [{question['title']}]({question['link']}) "
-        "on Mathematics Stack Exchange, licensed CC BY-SA.*\n"
+        f"on {SE_SITE_NAME}, licensed CC BY-SA.*\n"
     )
 
     front_matter = (
@@ -146,8 +161,8 @@ def write_post(question, solution_body):
         "layout: post\n"
         f"title: \"{question['title'].replace(chr(34), chr(39))}\"\n"
         "author: StemFix Bot\n"
-        "category: stem-homework\n"
-        "tags: []\n"
+        f"category: {SITE}\n"
+        f"tags: [{SITE}]\n"
         "---\n\n"
     )
 
@@ -174,6 +189,7 @@ def ping_indexnow(url, key):
 
 # ── Main ─────────────────────────────────────────────────────────────────
 def main():
+    print(f"=== Running for SITE={SITE} ===")
     processed = load_processed()
     candidates = get_unanswered_questions(SITE, processed)
 
