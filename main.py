@@ -12,7 +12,31 @@ SITE = os.environ.get("SITE", "math")  # math, physics, chemistry, or stats
 STATE_FILE = f"processed_questions_{SITE}.json"
 POSTS_DIR = "_posts"
 QUESTIONS_PER_RUN = 1
-AFFILIATE_LINK = "https://www.amazon.com/YOUR-ASSOCIATE-TAG"  # swap in real tag
+AMAZON_TAG = "aiopentec20-20"  # your Associates tracking ID
+
+AFFILIATE_BOOKS = {
+    "math": {
+        "title": "Schaum's Outline of Calculus, 7th Edition",
+        "asin": "126425833X",
+    },
+    "physics": {
+        "title": "Schaum's Outline of College Physics, 12th Edition",
+        "asin": "1259587398",
+    },
+    "chemistry": {
+        "title": "Schaum's Outline of College Chemistry, 10th Edition",
+        "asin": "007181082X",
+    },
+    "stats": {
+        "title": "Schaum's Outline of Statistics, 6th Edition",
+        "asin": "1260011461",
+    },
+}
+
+
+def affiliate_link():
+    book = AFFILIATE_BOOKS.get(SITE, AFFILIATE_BOOKS["math"])
+    return f"https://www.amazon.com/dp/{book['asin']}?tag={AMAZON_TAG}", book["title"]
 GEMINI_MODEL = "gemini-flash-lite-latest"  # self-updating alias, avoids retirement breakage
 GROQ_MODEL = "openai/gpt-oss-120b"
 
@@ -145,9 +169,10 @@ def write_post(question, solution_body):
     # Prefix with SITE so identical dates/slugs across subjects never collide.
     filename = f"{POSTS_DIR}/{date}-{SITE}-{slug}.md"
 
+    link, book_title = affiliate_link()
     disclosure_and_link = (
         "*As an Amazon Associate, I earn from qualifying purchases.* "
-        f"For more practice problems like this, see [this textbook]({AFFILIATE_LINK}).\n\n"
+        f"For more practice problems like this, see [{book_title}]({link}).\n\n"
         "---\n\n"
     )
 
