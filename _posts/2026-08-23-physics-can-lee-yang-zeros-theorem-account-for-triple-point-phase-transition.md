@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -202,3 +203,4 @@ The correspondence between complex‑plane neighborhoods (the analytic domains) 
 |
 
 *Original question: [Can Lee-Yang zeros theorem account for triple point phase transition?](https://physics.stackexchange.com/questions/83790/can-lee-yang-zeros-theorem-account-for-triple-point-phase-transition) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

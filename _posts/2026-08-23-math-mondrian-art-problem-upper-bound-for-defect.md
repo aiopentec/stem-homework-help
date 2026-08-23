@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Calculus, 7th Edition](https://www.amazon.com/dp/126425833X?tag=aiopentec20-20).
 
 ---
@@ -287,3 +288,4 @@ Empirically, the bound is very tight: for all \(n\) up to several thousand the b
 | **Packing rectangles arbitrarily and hoping they fit.** | Without a systematic placement the total width or height can easily exceed \(n\). | Use the monotone “staircase’’ placement (horizontal and vertical cumulative sums) – it gives a simple bound \(X,Y\le t\bigl(\
 
 *Original question: [Mondrian Art Problem Upper Bound for defect](https://math.stackexchange.com/questions/2041189/mondrian-art-problem-upper-bound-for-defect) on Mathematics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -135,3 +136,4 @@ where \(C^{(p+1)}\) is a \((p+1)\)-form gauge field.  The world‑volume couplin
 | **
 
 *Original question: [Quantum statistics of branes](https://physics.stackexchange.com/questions/26826/quantum-statistics-of-branes) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

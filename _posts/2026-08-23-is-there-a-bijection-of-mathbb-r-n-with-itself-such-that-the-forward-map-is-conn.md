@@ -7,6 +7,7 @@ tags: []
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -67,3 +68,4 @@ Specifically, by leveraging the dense graphs of pathological additive functions 
 * **Confusing Path-Connectedness with Connectedness in Subsets:** While open connected sets in $\mathbb{R}^n$ are path-connected, arbitrary connected sets can be quite intricate (e.g., the topologist's sine curve). Failing to account for non-path-connected yet connected sets can lead to flawed proofs regarding set-theoretic images.
 
 *Original question: [Is there a bijection of $\mathbb{R}^n$ with itself such that the forward map is connected but the inverse is not?](https://math.stackexchange.com/questions/952466/is-there-a-bijection-of-mathbbrn-with-itself-such-that-the-forward-map-is) on Mathematics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

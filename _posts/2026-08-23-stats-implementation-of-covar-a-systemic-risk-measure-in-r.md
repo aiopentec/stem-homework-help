@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Statistics, 6th Edition](https://www.amazon.com/dp/1260011461?tag=aiopentec20-20).
 
 ---
@@ -275,3 +276,4 @@ cond_mean <- rho_t * sigma_t1[1] / sigma_t1[2] * VaR_j
 cond_sd   <- sigma
 
 *Original question: [Implementation of CoVaR (a systemic risk measure) in R](https://stats.stackexchange.com/questions/188841/implementation-of-covar-a-systemic-risk-measure-in-r) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

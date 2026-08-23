@@ -6,6 +6,7 @@ category: physics
 tags: [physics]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -165,3 +166,4 @@ m\dot v_{0}+v_{0}\partial_{x}v_{0}
       +\frac{\hbar^{2}}{2m
 
 *Original question: [Systematic approach to deriving equations of collective field theory to any order](https://physics.stackexchange.com/questions/27016/systematic-approach-to-deriving-equations-of-collective-field-theory-to-any-orde) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

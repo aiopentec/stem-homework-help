@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -183,3 +184,4 @@ Hence the **\(\pi\) Berry phase of the surface state is a direct manifestation o
 \nu=\frac{1}{2\pi}\Bigl[\oint_{\partial (A+B)}{\bf A}\cdot d
 
 *Original question: [Where does the Berry phase of $\pi$ come from in a topological insulator?](https://physics.stackexchange.com/questions/70361/where-does-the-berry-phase-of-pi-come-from-in-a-topological-insulator) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

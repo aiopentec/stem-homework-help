@@ -6,6 +6,7 @@ category: stats
 tags: [stats]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -214,3 +215,4 @@ References for the geometry:
 
 
 *Original question: [Is there a general expression for ancillary statistics in exponential families?](https://stats.stackexchange.com/questions/193331/is-there-a-general-expression-for-ancillary-statistics-in-exponential-families) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -213,3 +214,4 @@ Therefore the expression given in the Q‑Chem manual (the “single‑sum” fo
 | **Assuming the spin‑orbit operator can change the total spin projection** (i.e., that \(\langle T^{m_s}| \hat H_{\rm SO} | T^{m'_s}\rangle\) is non‑zero for \(m_s\neq m'_s\)). | The operator contains \(\hat{\mathbf L}\cdot\hat{\mathbf S}\); the *spin* part can raise/lower \(m_s\) by at most one, but the *same* electron must also change its orbital angular momentum. For a *closed‑shell* reference (or for spin‑adapted CI) the net effect is that the overall **
 
 *Original question: [Calculating Triplet-Triplet Spin-Orbit Coupling](https://chemistry.stackexchange.com/questions/90004/calculating-triplet-triplet-spin-orbit-coupling) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

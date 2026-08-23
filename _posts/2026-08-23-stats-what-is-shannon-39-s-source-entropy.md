@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Statistics, 6th Edition](https://www.amazon.com/dp/1260011461?tag=aiopentec20-20).
 
 ---
@@ -167,3 +168,4 @@ These examples illustrate that the limit in (1) captures the *average* informati
 By keeping these points in mind, you can correctly interpret and compute the source (entropy‑rate) of any discrete‑alphabet stochastic process.
 
 *Original question: [What is Shannon&#39;s source entropy?](https://stats.stackexchange.com/questions/33361/what-is-shannons-source-entropy) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

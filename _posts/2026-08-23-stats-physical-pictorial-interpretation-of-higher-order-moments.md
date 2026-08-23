@@ -6,6 +6,7 @@ category: stats
 tags: [stats]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -200,3 +201,4 @@ The subtraction of 3 makes the **normal distribution** have \(\gamma_2 = 0\). In
 For any integer \(k\ge 
 
 *Original question: [Physical/pictorial interpretation of higher-order moments](https://stats.stackexchange.com/questions/12908/physical-pictorial-interpretation-of-higher-order-moments) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

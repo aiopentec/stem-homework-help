@@ -6,6 +6,7 @@ category: chemistry
 tags: [chemistry]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -231,3 +232,4 @@ Thus the *mathematics* of the rotation is identical; only the physical quantity 
 2. **Construct an orthonormal triad** \(\{\
 
 *Original question: [MNDO integrals in the global coordinate system](https://chemistry.stackexchange.com/questions/132067/mndo-integrals-in-the-global-coordinate-system) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

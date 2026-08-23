@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Calculus, 7th Edition](https://www.amazon.com/dp/126425833X?tag=aiopentec20-20).
 
 ---
@@ -140,3 +141,4 @@ Thus the Frobenius theorem strictly generalises the constant‑rank situation.
 Keeping these points in mind will prevent the most frequent conceptual errors when comparing the Constant Rank and Frobenius theorems.
 
 *Original question: [On the Constant Rank Theorem and the Frobenius Theorem for differential equations.](https://math.stackexchange.com/questions/427172/on-the-constant-rank-theorem-and-the-frobenius-theorem-for-differential-equation) on Mathematics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

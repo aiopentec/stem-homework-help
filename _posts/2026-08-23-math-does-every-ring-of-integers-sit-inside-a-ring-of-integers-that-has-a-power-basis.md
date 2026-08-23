@@ -6,6 +6,7 @@ category: math
 tags: [math]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -96,3 +97,4 @@ Consequently, at the current state of knowledge we cannot answer the question de
 ---
 
 *Original question: [Does every ring of integers sit inside a ring of integers that has a power basis?](https://math.stackexchange.com/questions/1754860/does-every-ring-of-integers-sit-inside-a-ring-of-integers-that-has-a-power-basis) on Mathematics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

@@ -6,6 +6,7 @@ category: chemistry
 tags: [chemistry]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -129,3 +130,4 @@ Consequently, the **torsional profile of the biradical** is dominated by **spin�
 By keeping these points in mind, one can correctly interpret torsional PESs for biradical systems such as the open‑ring 1,2‑dioxetane.
 
 *Original question: [Rotation around CC bond in 1,2-dioxetane: transition states and local minimum structures](https://chemistry.stackexchange.com/questions/47862/rotation-around-cc-bond-in-1-2-dioxetane-transition-states-and-local-minimum-st) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

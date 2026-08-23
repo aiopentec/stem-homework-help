@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -128,3 +129,4 @@ In those situations the **stereoelectronic requirement outweighs simple steric a
 | **Assuming the bulky borane will always avoid the larger substituent.** | Bulky boranes may be forced into a geometry that *does* place them near a larger group if that geometry satisfies the stere
 
 *Original question: [Rationalising diastereoselectivity of hydroboration using stereoelectronics](https://chemistry.stackexchange.com/questions/100417/rationalising-diastereoselectivity-of-hydroboration-using-stereoelectronics) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

@@ -9,6 +9,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -114,3 +115,4 @@ Thus, the observed colour difference is indeed due to the formation of the π‑
 By keeping these points in mind, you can correctly diagnose colour changes in aromatic Lewis‑acid complexes.
 
 *Original question: [What explains the color in clear sigma versus green pi complexes formed by methylbenzene?](https://chemistry.stackexchange.com/questions/95845/what-explains-the-color-in-clear-sigma-versus-green-pi-complexes-formed-by-methy) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

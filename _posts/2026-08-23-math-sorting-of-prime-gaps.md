@@ -6,6 +6,7 @@ category: math
 tags: [math]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -79,3 +80,4 @@ While the PNT sets the global average spacing and magnitude of primes (and conse
 3. **Assuming Monotonicity:** Assuming that because $f(n) \sim \pi(n)$, the sequence of prime gaps is nearly sorted to begin with. Prime gaps are notoriously erratic; the alignment of fixed points is a statistical property of global sorting order statistics, not local monotonicity.
 
 *Original question: [Sorting of prime gaps](https://math.stackexchange.com/questions/893875/sorting-of-prime-gaps) on Mathematics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

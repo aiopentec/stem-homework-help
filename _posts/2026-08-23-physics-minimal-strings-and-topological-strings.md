@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -182,3 +183,4 @@ The **closed‑string B‑model** partition function \(\exp\big(\sum_{g}g_s^{2g-
 * The **FZZT open‑string partition function** is the matrix‑model expectation value of a determinant operator (the Baker‑Akhiezer wavefunction). In the B‑model it is
 
 *Original question: [Minimal strings and topological strings](https://physics.stackexchange.com/questions/26814/minimal-strings-and-topological-strings) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

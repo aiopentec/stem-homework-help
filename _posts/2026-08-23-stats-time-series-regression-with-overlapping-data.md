@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Statistics, 6th Edition](https://www.amazon.com/dp/1260011461?tag=aiopentec20-20).
 
 ---
@@ -160,3 +161,4 @@ If you truly believe that *future* macro conditions influence *current* stock‑
 | **Practical recommendation** | 1. Estimate the regression by OLS with HAC (Newey‑West) SEs (lag ≥ 11).<br>2. Test
 
 *Original question: [Time series regression with overlapping data](https://stats.stackexchange.com/questions/8373/time-series-regression-with-overlapping-data) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

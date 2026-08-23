@@ -9,6 +9,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -129,3 +130,4 @@ Thus, **the benzene CCSDT(Q)/VTZ calculation holds the record for the largest nu
 By keeping these pitfalls in mind, you can reliably identify the true “largest” coupled‑cluster calculation for a given time‑frame.
 
 *Original question: [What is the largest coupled cluster calculation that has ever been done (as of March 2019)?](https://chemistry.stackexchange.com/questions/111197/what-is-the-largest-coupled-cluster-calculation-that-has-ever-been-done-as-of-m) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

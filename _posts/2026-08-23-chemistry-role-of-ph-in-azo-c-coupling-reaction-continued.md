@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -144,3 +145,4 @@ Thus, **pH determines which functional group is “activated”**:
 | Mistake
 
 *Original question: [Role of pH in azo C-coupling reaction, continued](https://chemistry.stackexchange.com/questions/112468/role-of-ph-in-azo-c-coupling-reaction-continued) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

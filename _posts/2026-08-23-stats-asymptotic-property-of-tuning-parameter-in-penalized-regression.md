@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Statistics, 6th Edition](https://www.amazon.com/dp/1260011461?tag=aiopentec20-20).
 
 ---
@@ -209,3 +210,4 @@ Take the selector (e.g. BIC) and write its objective as
 with \(\kappa_n\) growing at rate \(\log n\
 
 *Original question: [Asymptotic property of tuning parameter in penalized regression](https://stats.stackexchange.com/questions/57219/asymptotic-property-of-tuning-parameter-in-penalized-regression) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

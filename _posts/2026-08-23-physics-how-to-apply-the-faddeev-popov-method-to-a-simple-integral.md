@@ -6,6 +6,7 @@ category: physics
 tags: [physics]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -225,3 +226,4 @@ The FP method reproduces the standard result by:
 | **Forgetting the Jacobian when switching to polar coordinates** | The measure \(dx\,dy\)
 
 *Original question: [How to apply the Faddeev-Popov method to a simple integral](https://physics.stackexchange.com/questions/221848/how-to-apply-the-faddeev-popov-method-to-a-simple-integral) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

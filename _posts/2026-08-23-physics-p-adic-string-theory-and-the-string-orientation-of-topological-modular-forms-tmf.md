@@ -9,6 +9,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -118,3 +119,4 @@ In words: **the p‑adic string amplitudes compute the p‑adic components of th
 ## 
 
 *Original question: [$p$-Adic String Theory and the String-orientation of Topological Modular Forms (tmf)](https://physics.stackexchange.com/questions/107290/p-adic-string-theory-and-the-string-orientation-of-topological-modular-forms) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

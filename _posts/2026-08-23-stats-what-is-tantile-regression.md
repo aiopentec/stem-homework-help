@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Statistics, 6th Edition](https://www.amazon.com/dp/1260011461?tag=aiopentec20-20).
 
 ---
@@ -198,3 +199,4 @@ The **functional form** (the set of regressors, linear vs. spline, additive, etc
 | **Assuming the same asymptotic variance as ordinary quantile regression** | Weights affect the variance; naïve standard errors are biased. | Use the weighted‑bootstrap or the sandwich variance estimator that incorporates the observation weights
 
 *Original question: [What is tantile regression?](https://stats.stackexchange.com/questions/177992/what-is-tantile-regression) on Cross Validated (Stats Stack Exchange), licensed CC BY-SA.*
+{% endraw %}

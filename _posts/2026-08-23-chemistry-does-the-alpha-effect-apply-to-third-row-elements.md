@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Chemistry, 10th Edition](https://www.amazon.com/dp/007181082X?tag=aiopentec20-20).
 
 ---
@@ -143,3 +144,4 @@ Thus **the α‑effect does apply to third‑row elements**, and it is actually 
 Keeping these pitfalls in mind will help you develop a balanced, mechanistic answer for any α‑effect‑type problem, whether it involves first‑row or heavier elements.
 
 *Original question: [Does the alpha effect apply to third row elements?](https://chemistry.stackexchange.com/questions/91592/does-the-alpha-effect-apply-to-third-row-elements) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

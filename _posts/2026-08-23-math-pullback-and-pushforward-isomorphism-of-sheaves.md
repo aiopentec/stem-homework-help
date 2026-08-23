@@ -6,6 +6,7 @@ category: math
 tags: [math]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -160,3 +161,4 @@ Let
   (so \(\mathcal L = \mathcal O_{X}(
 
 *Original question: [Pullback and Pushforward Isomorphism of Sheaves](https://math.stackexchange.com/questions/6406/pullback-and-pushforward-isomorphism-of-sheaves) on Mathematics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

@@ -6,6 +6,7 @@ category: chemistry
 tags: [chemistry]
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -227,3 +228,4 @@ If the basis is orthonormal (\(\mathbf{S}= \mathbf{I}\)), the expression simplif
 \boldsymbol\mu_{12
 
 *Original question: [How to calculate transition dipole moment from two known wavefunctions](https://chemistry.stackexchange.com/questions/47529/how-to-calculate-transition-dipole-moment-from-two-known-wavefunctions) on Chemistry Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

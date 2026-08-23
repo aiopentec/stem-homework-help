@@ -7,6 +7,7 @@ tags: [physics]
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
 
 ---
@@ -143,3 +144,4 @@ All known \(\mathcal N=2\) SCFT Coulomb‑branch cones satisfy this condition. T
 | 5 | Geometric interpretation: the Coul
 
 *Original question: [On the Coulomb branch of ${\cal N}=2$ supersymmetric gauge theory](https://physics.stackexchange.com/questions/27267/on-the-coulomb-branch-of-cal-n-2-supersymmetric-gauge-theory) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}

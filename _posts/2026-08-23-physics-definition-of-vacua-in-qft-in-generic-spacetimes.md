@@ -8,6 +8,7 @@ tags:
 render_with_liquid: false
 ---
 
+{% raw %}
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
@@ -224,3 +225,4 @@ We will give the Schwarzschild version; the Rindler case is analogous.
 2. On the **future horizon** use Kruskal coordinates \((U,V)\) where \(U = -e^{-\kappa (t-r_*)}\) (with surface gravity \(\kappa\)). Positive‑frequency there means dependence \(e^{-i\Omega \ln(-U)}
 
 *Original question: [Definition of vacua in QFT in generic spacetimes](https://physics.stackexchange.com/questions/521728/definition-of-vacua-in-qft-in-generic-spacetimes) on Physics Stack Exchange, licensed CC BY-SA.*
+{% endraw %}
