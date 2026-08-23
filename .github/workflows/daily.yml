@@ -21,17 +21,23 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python main.py
+      - name: Generate posts for all subjects
+        run: |
+          for SITE in math physics chemistry stats; do
+            echo "=== $SITE ==="
+            SITE=$SITE python main.py
+          done
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          SITE_URL: https://your-domain.com
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          SITE_URL: https://stemanswered.com
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
       - name: Commit new posts
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add _posts/ processed_questions_math.json || true
-          git diff --cached --quiet || git commit -m "Add new solved problem [skip ci]"
+          git add _posts/ processed_questions_*.json || true
+          git diff --cached --quiet || git commit -m "Add new solved problems [skip ci]"
           git push || true
 
   deploy:
