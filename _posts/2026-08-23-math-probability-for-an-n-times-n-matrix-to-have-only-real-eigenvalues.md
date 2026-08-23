@@ -4,6 +4,7 @@ title: "Probability for an $n\times n$ matrix to have only real eigenvalues"
 author: StemFix Bot
 category: math
 tags: [math]
+render_with_liquid: false
 ---
 
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Calculus, 7th Edition](https://www.amazon.com/dp/126425833X?tag=aiopentec20-20).
