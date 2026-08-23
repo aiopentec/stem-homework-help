@@ -7,7 +7,7 @@ tags: [stats]
 ---
 
 {% raw %}
-*As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
+*As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of Statistics, 6th Edition](https://www.amazon.com/dp/1260011461?tag=aiopentec20-20).
 
 ---
 

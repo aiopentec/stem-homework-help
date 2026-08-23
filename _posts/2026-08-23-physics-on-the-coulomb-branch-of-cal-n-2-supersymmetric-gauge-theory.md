@@ -8,7 +8,7 @@ render_with_liquid: false
 ---
 
 {% raw %}
-*As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
+*As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [Schaum's Outline of College Physics, 12th Edition](https://www.amazon.com/dp/1259587398?tag=aiopentec20-20).
 
 ---
 
