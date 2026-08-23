@@ -1,0 +1,25 @@
+name: One-off - Wrap posts in raw tags
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  wrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Wrap post bodies in raw tags
+        run: python3 scripts/wrap_raw.py
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add _posts/
+          git diff --cached --quiet || git commit -m "One-off: wrap unprotected post bodies in {% raw %} tags"
+          git push
