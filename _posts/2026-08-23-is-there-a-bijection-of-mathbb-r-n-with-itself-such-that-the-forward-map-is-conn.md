@@ -1,9 +1,11 @@
 ---
+---
 layout: post
-title: "Is there a bijection of $\mathbb{R}^n$ with itself such that the forward map is connected but the inverse is not?"
+title: 'Is there a bijection of $\mathbb{R}^n$ with itself such that the forward map is connected but the inverse is not?'
 author: StemFix Bot
 category: stem-homework
 tags: []
+render_with_liquid: false
 ---
 
 *As an Amazon Associate, I earn from qualifying purchases.* For more practice problems like this, see [this textbook](https://www.amazon.com/YOUR-ASSOCIATE-TAG).
