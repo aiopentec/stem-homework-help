@@ -3,10 +3,6 @@ description: Worked solutions to unanswered math, physics, chemistry, and statis
 url: https://stemanswered.com
 theme: minima
 permalink: pretty
+excerpt_separator: ""
 plugins:
   - jekyll-sitemap
-header_pages:
-  - math.md
-  - physics.md
-  - chemistry.md
-  - stats.md
