@@ -2,6 +2,7 @@
 layout: page
 title: Chemistry
 permalink: /chemistry/
+subject: chemistry
 ---
 
 <ul class="post-list">
