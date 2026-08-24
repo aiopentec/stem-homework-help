@@ -2,6 +2,7 @@
 layout: page
 title: Stats
 permalink: /stats/
+subject: stats
 ---
 
 <ul class="post-list">
