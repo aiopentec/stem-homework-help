@@ -2,6 +2,7 @@
 layout: page
 title: Physics
 permalink: /physics/
+subject: physics
 ---
 
 <ul class="post-list">
