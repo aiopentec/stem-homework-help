@@ -2,6 +2,7 @@
 layout: page
 title: Math
 permalink: /math/
+subject: math
 ---
 
 <ul class="post-list">
