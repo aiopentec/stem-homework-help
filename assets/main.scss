@@ -4,35 +4,40 @@
 @import "minima";
 
 :root {
-  --color-math: #2b6cb0;
-  --color-physics: #6b46c1;
-  --color-chemistry: #2f855a;
-  --color-stats: #c05621;
-  --color-ink: #1a202c;
-  --color-muted: #718096;
-  --color-bg: #fafafa;
-  --color-card: #ffffff;
-  --radius: 12px;
+  --color-math: #c1666b;
+  --color-physics: #8a6fae;
+  --color-chemistry: #7a9b6e;
+  --color-stats: #d9924a;
+  --gradient-math: linear-gradient(135deg, #c1666b, #d98a8e);
+  --gradient-physics: linear-gradient(135deg, #8a6fae, #a68bc9);
+  --gradient-chemistry: linear-gradient(135deg, #7a9b6e, #96b98a);
+  --gradient-stats: linear-gradient(135deg, #d9924a, #e8ab6f);
+  --color-ink: #3a2e28;
+  --color-muted: #8a7a6d;
+  --color-bg: #fdf8f3;
+  --color-card: #fffdfa;
+  --radius: 16px;
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--color-bg);
   color: var(--color-ink);
 }
 
 h1, h2, h3, .site-title, .post-title {
-  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .site-header {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ece3d8;
   background: var(--color-card);
 }
 .site-title {
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   color: var(--color-ink) !important;
 }
 .site-nav .page-link {
@@ -54,23 +59,36 @@ h1, h2, h3, .site-title, .post-title {
   padding: 1.5rem;
   border-radius: var(--radius);
   text-decoration: none;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 14px rgba(58,46,40,0.10);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .subject-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+  box-shadow: 0 8px 22px rgba(58,46,40,0.16);
+}
+.subject-card,
+.subject-card:visited,
+.subject-card:hover,
+.subject-card h2,
+.subject-card p {
+  color: #fff !important;
 }
 .subject-card h2 { margin: 0 0 0.3rem; font-size: 1.3rem; }
-.subject-card p { margin: 0; opacity: 0.9; font-size: 0.9rem; }
-.subject-math { background: linear-gradient(135deg, #2b6cb0, #3182ce); }
-.subject-physics { background: linear-gradient(135deg, #6b46c1, #805ad5); }
-.subject-chemistry { background: linear-gradient(135deg, #2f855a, #38a169); }
-.subject-stats { background: linear-gradient(135deg, #c05621, #dd6b20); }
+.subject-card p { margin: 0; opacity: 0.92; font-size: 0.9rem; }
+.subject-math { background: var(--gradient-math); }
+.subject-physics { background: var(--gradient-physics); }
+.subject-chemistry { background: var(--gradient-chemistry); }
+.subject-stats { background: var(--gradient-stats); }
+
+.tagline {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  max-width: 46em;
+  margin-top: 0.5rem;
+}
 
 .post-list { list-style: none; padding: 0; margin: 0; }
-.post-list li { padding: 1rem 0; border-bottom: 1px solid #eee; }
+.post-list li { padding: 1rem 0; border-bottom: 1px solid #ece3d8; }
 .post-list li:last-child { border-bottom: none; }
 .post-list h3 { margin: 0.25rem 0 0; font-size: 1.05rem; }
 .post-meta { font-size: 0.8rem; color: var(--color-muted); }
@@ -80,10 +98,9 @@ h1, h2, h3, .site-title, .post-title {
   padding: 0.1rem 0.6rem;
   border-radius: 999px;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
 }
 .tag-math { background: var(--color-math); }
 .tag-physics { background: var(--color-physics); }
@@ -94,7 +111,7 @@ h1, h2, h3, .site-title, .post-title {
   background: var(--color-card);
   border-radius: var(--radius);
   padding: 2rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 10px rgba(58,46,40,0.08);
   border-top: 5px solid transparent;
 }
 .solution-card--math { border-top-color: var(--color-math); }
@@ -106,14 +123,14 @@ h1, h2, h3, .site-title, .post-title {
   display: inline-block;
   margin-bottom: 1rem;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-muted);
   text-decoration: none;
 }
 .back-link:hover { color: var(--color-ink); }
 
-.post-content { line-height: 1.7; }
-.post-content hr { border: none; border-top: 1px solid #eee; margin: 1.75rem 0; }
+.post-content { line-height: 1.75; }
+.post-content hr { border: none; border-top: 1px solid #ece3d8; margin: 1.75rem 0; }
 .post-content h2 { margin-top: 2rem; }
 
 .subject-banner {
@@ -123,34 +140,26 @@ h1, h2, h3, .site-title, .post-title {
   color: #fff;
 }
 .subject-banner .post-title { margin: 0; color: #fff; }
-.subject-banner--math { background: linear-gradient(135deg, #2b6cb0, #3182ce); }
-.subject-banner--physics { background: linear-gradient(135deg, #6b46c1, #805ad5); }
-.subject-banner--chemistry { background: linear-gradient(135deg, #2f855a, #38a169); }
-.subject-banner--stats { background: linear-gradient(135deg, #c05621, #dd6b20); }
+.subject-banner--math { background: var(--gradient-math); }
+.subject-banner--physics { background: var(--gradient-physics); }
+.subject-banner--chemistry { background: var(--gradient-chemistry); }
+.subject-banner--stats { background: var(--gradient-stats); }
 
-.site-footer {
-  border-top: 1px solid #eee;
-  color: var(--color-muted);
-  font-size: 0.85rem;
-}
 .disclosure {
   font-size: 0.8rem;
   color: var(--color-muted);
   margin-bottom: 0.5rem;
 }
-.footer-nav {
-  margin-bottom: 1rem;
-}
+.footer-nav { margin-bottom: 1rem; }
 .footer-nav a {
   margin-right: 1rem;
   font-size: 0.85rem;
   color: var(--color-muted);
 }
 .footer-nav a:hover { color: var(--color-ink); }
-.subject-card,
-.subject-card:visited,
-.subject-card:hover,
-.subject-card h2,
-.subject-card p {
-  color: #fff !important;
+
+.site-footer {
+  border-top: 1px solid #ece3d8;
+  color: var(--color-muted);
+  font-size: 0.85rem;
 }
