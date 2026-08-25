@@ -1,0 +1,42 @@
+derivatives:
+  name: Derivatives
+  subject: math
+  topic: calculus
+  description: >
+    Derivatives describe how a quantity changes with respect to another quantity.
+
+integrals:
+  name: Integrals
+  subject: math
+  topic: calculus
+  description: >
+    Integrals are used to accumulate quantities and calculate areas,
+    volumes and other quantities.
+
+probability:
+  name: Probability
+  subject: stats
+  topic: probability
+  description: >
+    Probability provides a mathematical framework for describing uncertainty.
+
+linear-regression:
+  name: Linear Regression
+  subject: stats
+  topic: regression
+  description: >
+    Linear regression models relationships between variables using a linear equation.
+
+logistic-regression:
+  name: Logistic Regression
+  subject: stats
+  topic: regression
+  description: >
+    Logistic regression models outcomes such as probabilities or binary classes.
+
+entropy:
+  name: Entropy
+  subject: stats
+  topic: probability
+  description: >
+    Entropy measures uncertainty or information associated with a probability distribution.
