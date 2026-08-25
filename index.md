@@ -23,6 +23,39 @@ title: Home
     <p>{{ site.categories.stats | size }} solved problems</p>
   </a>
 </div>
+<section class="stem-search">
+
+  <h1>Find a STEM answer</h1>
+
+  <p>
+    Search worked solutions across mathematics,
+    physics, chemistry and statistics.
+  </p>
+
+  <form
+    action="/search/"
+    method="get"
+  >
+
+    <label for="search">
+      Search STEM Answered
+    </label>
+
+    <input
+      id="search"
+      name="q"
+      type="search"
+      placeholder="What are you trying to solve?"
+      autocomplete="off"
+    >
+
+    <button type="submit">
+      Search
+    </button>
+
+  </form>
+
+</section>
 
 ## Latest Solved Problems
 
