@@ -3,21 +3,23 @@ layout: default
 title: Home
 ---
 
+<p class="tagline">Real questions from real students, answered in full — free worked solutions across math, physics, chemistry, and statistics, added every day.</p>
+
 <div class="subject-grid">
   <a class="subject-card subject-math" href="{{ '/math/' | relative_url }}">
-    <h2>Math</h2>
+    <h2>🧮 Math</h2>
     <p>{{ site.categories.math | size }} solved problems</p>
   </a>
   <a class="subject-card subject-physics" href="{{ '/physics/' | relative_url }}">
-    <h2>Physics</h2>
+    <h2>⚛️ Physics</h2>
     <p>{{ site.categories.physics | size }} solved problems</p>
   </a>
   <a class="subject-card subject-chemistry" href="{{ '/chemistry/' | relative_url }}">
-    <h2>Chemistry</h2>
+    <h2>🧪 Chemistry</h2>
     <p>{{ site.categories.chemistry | size }} solved problems</p>
   </a>
   <a class="subject-card subject-stats" href="{{ '/stats/' | relative_url }}">
-    <h2>Statistics</h2>
+    <h2>📊 Statistics</h2>
     <p>{{ site.categories.stats | size }} solved problems</p>
   </a>
 </div>
