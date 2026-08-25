@@ -1,259 +1,388 @@
-import os
+"""
+STEM Answered V2
+Main orchestration entry point.
+
+The pipeline is intentionally conservative:
+Discovery
+→ Deduplication
+→ Classification
+→ Generation
+→ Verification
+→ Repair
+→ Quality Gate
+→ Publishing
+→ Search Index
+→ IndexNow
+"""
+
 import json
-import time
-import datetime
-import re
-import requests
-import yaml
-from google import genai
-from groq import Groq
+import os
+from pathlib import Path
 
-# ── Config ────────────────────────────────────────────────────────────────
-SITE = os.environ.get("SITE", "math")  # math, physics, chemistry, or stats
-STATE_FILE = f"processed_questions_{SITE}.json"
-POSTS_DIR = "_posts"
-QUESTIONS_PER_RUN = 1
-GEMINI_MODEL = "gemini-flash-lite-latest"  # self-updating alias, avoids retirement breakage
-GROQ_MODEL = "openai/gpt-oss-120b"
-
-SUBJECT_LABELS = {
-    "math": "mathematics",
-    "physics": "physics",
-    "chemistry": "chemistry",
-    "stats": "statistics",
-}
-SE_SITE_NAMES = {
-    "math": "Mathematics Stack Exchange",
-    "physics": "Physics Stack Exchange",
-    "chemistry": "Chemistry Stack Exchange",
-    "stats": "Cross Validated (Stats Stack Exchange)",
-}
-SUBJECT_LABEL = SUBJECT_LABELS.get(SITE, SITE)
-SE_SITE_NAME = SE_SITE_NAMES.get(SITE, "Stack Exchange")
-
-AMAZON_TAG = "aiopentec20-20"  # Associates tracking ID
-
-AFFILIATE_BOOKS = {
-    "math": {
-        "title": "Schaum's Outline of Calculus, 7th Edition",
-        "asin": "126425833X",
-    },
-    "physics": {
-        "title": "Schaum's Outline of College Physics, 12th Edition",
-        "asin": "1259587398",
-    },
-    "chemistry": {
-        "title": "Schaum's Outline of College Chemistry, 10th Edition",
-        "asin": "007181082X",
-    },
-    "stats": {
-        "title": "Schaum's Outline of Statistics, 6th Edition",
-        "asin": "1260011461",
-    },
-}
-
-gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-groq_client = Groq(api_key=os.environ["GROQ_API_KEY"]) if os.environ.get("GROQ_API_KEY") else None
+from scripts.discovery import get_unanswered_questions
+from scripts.deduplicator import load_processed, save_processed
+from scripts.classifier import classify_question
+from scripts.generator import generate_solution
+from scripts.verifier import verify_solution
+from scripts.repair import repair_solution
+from scripts.quality import calculate_quality
+from scripts.linker import build_related_questions
+from scripts.publisher import write_post
+from scripts.indexer import build_search_index
 
 
-def affiliate_link():
-    book = AFFILIATE_BOOKS.get(SITE, AFFILIATE_BOOKS["math"])
-    return f"https://www.amazon.com/dp/{book['asin']}?tag={AMAZON_TAG}", book["title"]
+SITE = os.environ.get("SITE", "math")
+
+QUESTIONS_PER_RUN = int(
+    os.environ.get("QUESTIONS_PER_RUN", "1")
+)
+
+MAX_REPAIR_ATTEMPTS = int(
+    os.environ.get("MAX_REPAIR_ATTEMPTS", "2")
+)
+
+SITE_URL = os.environ.get(
+    "SITE_URL",
+    "https://stemanswered.com"
+).rstrip("/")
 
 
-# ── State (dedupe) ───────────────────────────────────────────────────────
-def load_processed():
-    if os.path.exists(STATE_FILE):
-        with open(STATE_FILE, "r") as f:
-            return set(json.load(f))
-    return set()
+def load_taxonomy():
+    """Load topics and concepts from _data."""
+
+    import yaml
+
+    topics_path = Path("_data/topics.yml")
+    concepts_path = Path("_data/concepts.yml")
+
+    with open(topics_path, "r", encoding="utf-8") as f:
+        topics = yaml.safe_load(f) or []
+
+    with open(concepts_path, "r", encoding="utf-8") as f:
+        concepts = yaml.safe_load(f) or []
+
+    return topics, concepts
 
 
-def save_processed(ids):
-    with open(STATE_FILE, "w") as f:
-        json.dump(sorted(ids), f, indent=2)
+def load_existing_content():
+    """
+    Load lightweight metadata from existing posts.
+
+    This is used for internal linking and does not modify
+    existing content.
+    """
+
+    from scripts.indexer import load_content_index
+
+    return load_content_index()
 
 
-# ── Fetch unanswered questions from Stack Exchange ──────────────────────
-def get_unanswered_questions(site, exclude_ids, limit=20):
-    url = "https://api.stackexchange.com/2.3/questions/unanswered"
-    params = {
-        "order": "desc",
-        "sort": "votes",
-        "site": site,
-        "filter": "withbody",
-        "pagesize": limit,
-    }
-    resp = requests.get(url, params=params, timeout=30)
-    resp.raise_for_status()
-    items = resp.json().get("items", [])
-    candidates = [q for q in items if q["question_id"] not in exclude_ids]
-    return candidates
+def process_question(
+    question,
+    topics,
+    concepts,
+    existing_content
+):
+    """Process one Stack Exchange question."""
 
+    question_id = str(
+        question["question_id"]
+    )
 
-def build_prompt(question):
-    return f"""You are an expert {SUBJECT_LABEL} tutor. A student posted this problem
-and never received an answer:
+    print(
+        f"\nProcessing question {question_id}: "
+        f"{question['title']}"
+    )
 
-Title: {question['title']}
-Body: {strip_html(question['body'])[:2000]}
+    # ---------------------------------------------------------
+    # 1. CLASSIFICATION
+    # ---------------------------------------------------------
 
-Write a complete worked solution in Markdown:
-1. Restate what's being asked in plain language
-2. Show every step, don't skip any
-3. State the final answer clearly
-4. Add a short "Common Mistakes" section for this problem type
-
-Do not include a closing resources section — that will be added separately."""
-
-
-# ── Groq attempt (primary) ───────────────────────────────────────────────
-def try_groq(prompt, max_attempts=2, max_wait=8):
-    if groq_client is None:
+    try:
+        metadata = classify_question(
+            question,
+            topics,
+            concepts
+        )
+    except Exception as exc:
+        print(
+            f"Classification failed: {exc}"
+        )
         return None
-    for attempt in range(1, max_attempts + 1):
-        try:
-            resp = groq_client.chat.completions.create(
-                model=GROQ_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-            )
-            return resp.choices[0].message.content
-        except Exception as e:
-            wait = min(2 ** attempt, max_wait)
-            print(f"Groq attempt {attempt} failed ({e})")
-            if attempt == max_attempts:
-                print("Groq exhausted, falling back to Gemini...")
-                return None
-            time.sleep(wait)
-    return None
 
-
-# ── Gemini attempt (fallback) ────────────────────────────────────────────
-def try_gemini(prompt, max_attempts=2, max_wait=8):
-    for attempt in range(1, max_attempts + 1):
-        try:
-            response = gemini_client.models.generate_content(
-                model=GEMINI_MODEL,
-                contents=prompt,
-            )
-            return response.text
-        except Exception as e:
-            wait = min(2 ** attempt, max_wait)
-            print(f"Gemini attempt {attempt} failed ({e})")
-            if attempt == max_attempts:
-                print("Gemini exhausted too — skipping this question, will retry next run.")
-                return None
-            time.sleep(wait)
-    return None
-
-
-def generate_solution(question):
-    prompt = build_prompt(question)
-    solution = try_groq(prompt)
-    if solution is None:
-        solution = try_gemini(prompt)
-    return solution
-
-
-def strip_html(text):
-    return re.sub(r"<[^>]+>", "", text or "")
-
-
-def slugify(title):
-    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
-    return slug[:80]
-
-
-# ── Build and write the Jekyll post ─────────────────────────────────────
-def write_post(question, solution_body):
-    date = datetime.date.today().isoformat()
-    slug = slugify(question["title"])
-    # Prefix with SITE so identical dates/slugs across subjects never collide.
-    filename = f"{POSTS_DIR}/{date}-{SITE}-{slug}.md"
-
-    link, book_title = affiliate_link()
-    disclosure_and_link = (
-        "*As an Amazon Associate, I earn from qualifying purchases.* "
-        f"For more practice problems like this, see [{book_title}]({link}).\n\n"
-        "---\n\n"
+    print(
+        "Classification:",
+        metadata
     )
 
-    attribution = (
-        f"\n\n*Original question: [{question['title']}]({question['link']}) "
-        f"on {SE_SITE_NAME}, licensed CC BY-SA.*\n"
+    # ---------------------------------------------------------
+    # 2. GENERATION
+    # ---------------------------------------------------------
+
+    solution = generate_solution(
+        question,
+        metadata
     )
 
-    # yaml.safe_dump handles all escaping (backslashes, quotes, colons, LaTeX)
-    # correctly, unlike manual string interpolation.
-    front_matter_dict = {
-        "layout": "post",
-        "title": question["title"],
-        "author": "StemFix Bot",
-        "category": SITE,
-        "tags": [SITE],
+    if not solution:
+        print("Generation failed.")
+        return None
+
+    # ---------------------------------------------------------
+    # 3. VERIFICATION + REPAIR LOOP
+    # ---------------------------------------------------------
+
+    verification = verify_solution(
+        question,
+        solution,
+        metadata
+    )
+
+    repair_attempts = 0
+
+    while (
+        not verification.get("passed", False)
+        or verification.get("score", 0) < 80
+    ) and repair_attempts < MAX_REPAIR_ATTEMPTS:
+
+        repair_attempts += 1
+
+        print(
+            f"Verification failed. "
+            f"Repair attempt {repair_attempts}."
+        )
+
+        repaired = repair_solution(
+            question,
+            solution,
+            verification,
+            metadata
+        )
+
+        if not repaired:
+            break
+
+        solution = repaired
+
+        verification = verify_solution(
+            question,
+            solution,
+            metadata
+        )
+
+    # ---------------------------------------------------------
+    # 4. FINAL QUALITY GATE
+    # ---------------------------------------------------------
+
+    quality = calculate_quality(
+        verification=verification,
+        metadata=metadata,
+        solution=solution
+    )
+
+    print(
+        f"Verification score: "
+        f"{verification.get('score', 0)}"
+    )
+
+    print(
+        f"Quality score: "
+        f"{quality['score']}"
+    )
+
+    if not quality["publishable"]:
+        print(
+            "QUALITY GATE FAILED. "
+            "Question will not be published."
+        )
+        return {
+            "status": "rejected",
+            "question_id": question_id,
+            "verification": verification,
+            "quality": quality,
+        }
+
+    # ---------------------------------------------------------
+    # 5. INTERNAL LINKING
+    # ---------------------------------------------------------
+
+    related_questions = build_related_questions(
+        current={
+            **metadata,
+            "question_id": question_id,
+            "title": question["title"],
+        },
+        existing_questions=existing_content,
+        limit=6
+    )
+
+    # ---------------------------------------------------------
+    # 6. PUBLISH
+    # ---------------------------------------------------------
+
+    filename, public_url = write_post(
+        question=question,
+        solution=solution,
+        metadata=metadata,
+        verification=verification,
+        quality=quality,
+        related_questions=related_questions
+    )
+
+    print(
+        f"Published: {filename}"
+    )
+
+    return {
+        "status": "published",
+        "question_id": question_id,
+        "filename": filename,
+        "url": public_url,
+        "verification": verification,
+        "quality": quality,
     }
-    front_matter = "---\n" + yaml.safe_dump(
-        front_matter_dict, allow_unicode=True, sort_keys=False
-    ) + "---\n\n"
-
-    # Wrap the body in {% raw %}...{% endraw %} so Jekyll's Liquid parser
-    # never touches it. AI-generated LaTeX frequently produces literal "{%"
-    # sequences (e.g. "\boxed{%" wrapped across a line break), which Liquid
-    # otherwise misreads as an unclosed tag. render_with_liquid: false would
-    # be the cleaner fix but requires Jekyll 4.0+, and GitHub Pages is
-    # pinned to Jekyll 3.10 — raw/endraw works on every Liquid version.
-    body = disclosure_and_link + solution_body + attribution
-    content = front_matter + "{% raw %}\n" + body + "\n{% endraw %}\n"
-
-    os.makedirs(POSTS_DIR, exist_ok=True)
-    with open(filename, "w") as f:
-        f.write(content)
-
-    return filename
 
 
-# ── IndexNow ping ────────────────────────────────────────────────────────
-def ping_indexnow(url, key):
+def ping_indexnow(url):
+    """Notify IndexNow after successful publishing."""
+
+    import requests
+
+    key = os.environ.get("INDEXNOW_KEY")
+
+    if not key:
+        return
+
     try:
         requests.get(
             "https://api.indexnow.org/indexnow",
-            params={"url": url, "key": key},
-            timeout=10,
+            params={
+                "url": url,
+                "key": key
+            },
+            timeout=10
         )
-    except Exception as e:
-        print(f"IndexNow ping failed (non-fatal): {e}")
+
+        print(
+            f"IndexNow ping sent: {url}"
+        )
+
+    except Exception as exc:
+        print(
+            f"IndexNow ping failed "
+            f"(non-fatal): {exc}"
+        )
 
 
-# ── Main ─────────────────────────────────────────────────────────────────
 def main():
-    print(f"=== Running for SITE={SITE} ===")
-    processed = load_processed()
-    candidates = get_unanswered_questions(SITE, processed)
+
+    print("=" * 60)
+    print("STEM ANSWERED V2")
+    print("=" * 60)
+
+    print(f"SITE: {SITE}")
+    print(
+        f"QUESTIONS_PER_RUN: "
+        f"{QUESTIONS_PER_RUN}"
+    )
+
+    # ---------------------------------------------------------
+    # LOAD STATE
+    # ---------------------------------------------------------
+
+    processed = load_processed(SITE)
+
+    # ---------------------------------------------------------
+    # LOAD TAXONOMY
+    # ---------------------------------------------------------
+
+    topics, concepts = load_taxonomy()
+
+    # ---------------------------------------------------------
+    # LOAD CONTENT INDEX
+    # ---------------------------------------------------------
+
+    existing_content = load_existing_content()
+
+    # ---------------------------------------------------------
+    # DISCOVER QUESTIONS
+    # ---------------------------------------------------------
+
+    candidates = get_unanswered_questions(
+        site=SITE,
+        exclude_ids=processed,
+        limit=20
+    )
 
     if not candidates:
-        print("No new unanswered questions found.")
+        print(
+            "No new unanswered questions found."
+        )
         return
 
-    written = []
-    for question in candidates[:QUESTIONS_PER_RUN]:
-        solution = generate_solution(question)
-        if solution is None:
-            continue  # skip, do NOT mark as processed — retry next run
-        filename = write_post(question, solution)
-        written.append(filename)
-        processed.add(question["question_id"])
-        print(f"Wrote {filename}")
+    print(
+        f"Candidates found: "
+        f"{len(candidates)}"
+    )
 
-    if written:
-        save_processed(processed)
-        site_url = os.environ.get("SITE_URL", "").rstrip("/")
-        indexnow_key = os.environ.get("INDEXNOW_KEY")
-        if site_url and indexnow_key:
-            for f in written:
-                slug = os.path.basename(f).replace(".md", "")
-                ping_indexnow(f"{site_url}/{slug}/", indexnow_key)
-    else:
-        print("No posts written this run.")
+    published = []
+
+    # ---------------------------------------------------------
+    # PROCESS
+    # ---------------------------------------------------------
+
+    for question in candidates[
+        :QUESTIONS_PER_RUN
+    ]:
+
+        result = process_question(
+            question=question,
+            topics=topics,
+            concepts=concepts,
+            existing_content=existing_content
+        )
+
+        if not result:
+            continue
+
+        if result["status"] == "published":
+
+            question_id = str(
+                question["question_id"]
+            )
+
+            processed.add(question_id)
+
+            published.append(result)
+
+    # ---------------------------------------------------------
+    # SAVE STATE
+    # ---------------------------------------------------------
+
+    if published:
+        save_processed(
+            SITE,
+            processed
+        )
+
+        for item in published:
+            ping_indexnow(
+                item["url"]
+            )
+
+    # ---------------------------------------------------------
+    # REBUILD SEARCH INDEX
+    # ---------------------------------------------------------
+
+    print(
+        "\nRebuilding search index..."
+    )
+
+    build_search_index()
+
+    print(
+        "\nSTEM Answered V2 run complete."
+    )
 
 
 if __name__ == "__main__":
