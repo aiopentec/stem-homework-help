@@ -147,3 +147,10 @@ h1, h2, h3, .site-title, .post-title {
   color: var(--color-muted);
 }
 .footer-nav a:hover { color: var(--color-ink); }
+.subject-card,
+.subject-card:visited,
+.subject-card:hover,
+.subject-card h2,
+.subject-card p {
+  color: #fff !important;
+}
