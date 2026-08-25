@@ -133,3 +133,17 @@ h1, h2, h3, .site-title, .post-title {
   color: var(--color-muted);
   font-size: 0.85rem;
 }
+.disclosure {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
+}
+.footer-nav {
+  margin-bottom: 1rem;
+}
+.footer-nav a {
+  margin-right: 1rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.footer-nav a:hover { color: var(--color-ink); }
