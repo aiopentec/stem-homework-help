@@ -185,11 +185,12 @@ def write_post(question, solution_body):
 
     # yaml.safe_dump handles all escaping (backslashes, quotes, colons, LaTeX)
     # correctly, unlike manual string interpolation.
-    front_matter_dict = {
-        "layout": "post",
+        front_matter_dict = {
+        "layout": "question",
         "title": question["title"],
         "author": "StemFix Bot",
         "category": SITE,
+        "subject": SITE,
         "tags": [SITE],
     }
     front_matter = "---\n" + yaml.safe_dump(
