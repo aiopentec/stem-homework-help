@@ -1,0 +1,67 @@
+math:
+  algebra:
+    name: Algebra
+    slug: algebra
+
+  calculus:
+    name: Calculus
+    slug: calculus
+
+  geometry:
+    name: Geometry
+    slug: geometry
+
+  probability:
+    name: Probability
+    slug: probability
+
+  linear-algebra:
+    name: Linear Algebra
+    slug: linear-algebra
+
+physics:
+  mechanics:
+    name: Mechanics
+    slug: mechanics
+
+  electricity:
+    name: Electricity
+    slug: electricity
+
+  thermodynamics:
+    name: Thermodynamics
+    slug: thermodynamics
+
+  waves:
+    name: Waves
+    slug: waves
+
+chemistry:
+  organic-chemistry:
+    name: Organic Chemistry
+    slug: organic-chemistry
+
+  physical-chemistry:
+    name: Physical Chemistry
+    slug: physical-chemistry
+
+  inorganic-chemistry:
+    name: Inorganic Chemistry
+    slug: inorganic-chemistry
+
+stats:
+  probability:
+    name: Probability
+    slug: probability
+
+  regression:
+    name: Regression
+    slug: regression
+
+  statistical-inference:
+    name: Statistical Inference
+    slug: statistical-inference
+
+  distributions:
+    name: Probability Distributions
+    slug: distributions
