@@ -1,0 +1,22 @@
+{% if page.concepts and page.concepts.size > 0 %}
+
+<section class="related-concepts">
+
+  <h2>Related Concepts</h2>
+
+  <ul>
+    {% for slug in page.concepts %}
+      {% assign concept = site.data.concepts[slug] %}
+      {% if concept %}
+        <li>
+          <a href="{{ '/concepts/' | append: slug | append: '/' | relative_url }}">
+            {{ concept.name }}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+</section>
+
+{% endif %}
