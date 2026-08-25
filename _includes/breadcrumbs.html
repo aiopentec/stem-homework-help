@@ -1,0 +1,22 @@
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ '/' | relative_url }}">Home</a>
+
+  {% if page.subject %}
+    <span>›</span>
+
+    {% if page.subject == "math" %}
+      <a href="{{ '/math/' | relative_url }}">Mathematics</a>
+    {% elsif page.subject == "physics" %}
+      <a href="{{ '/physics/' | relative_url }}">Physics</a>
+    {% elsif page.subject == "chemistry" %}
+      <a href="{{ '/chemistry/' | relative_url }}">Chemistry</a>
+    {% elsif page.subject == "stats" %}
+      <a href="{{ '/stats/' | relative_url }}">Statistics</a>
+    {% endif %}
+  {% endif %}
+
+  {% if page.topic %}
+    <span>›</span>
+    <span>{{ page.topic | replace: "-", " " | capitalize }}</span>
+  {% endif %}
+</nav>
