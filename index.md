@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-<p class="tagline">Real questions from real students, answered in full — free worked solutions across math, physics, chemistry, and statistics, added every day.</p>
+<p class="tagline">Worked solutions to unanswered STEM questions — from coursework to open research problems — across math, physics, chemistry, and statistics, growing daily.</p>
 
 <div class="subject-grid">
   <a class="subject-card subject-math" href="{{ '/math/' | relative_url }}">
