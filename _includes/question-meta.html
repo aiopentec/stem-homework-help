@@ -1,0 +1,23 @@
+<div class="question-meta">
+
+  {% if page.topic %}
+    <span>
+      Topic:
+      {{ page.topic | replace: "-", " " | capitalize }}
+    </span>
+  {% endif %}
+
+  {% if page.difficulty %}
+    <span>
+      Difficulty:
+      {{ page.difficulty | capitalize }}
+    </span>
+  {% endif %}
+
+  {% if page.quality.score %}
+    <span>
+      Verified solution
+    </span>
+  {% endif %}
+
+</div>
