@@ -1,0 +1,21 @@
+{% assign related = site.categories[page.category] | where_exp: "post", "post.url != page.url" | slice: 0, 5 %}
+
+{% if related.size > 0 %}
+
+<section class="related-questions">
+
+  <h2>More {{ page.category | capitalize }} Problems</h2>
+
+  <ul>
+    {% for post in related %}
+      <li>
+        <a href="{{ post.url | relative_url }}">
+          {{ post.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+</section>
+
+{% endif %}
