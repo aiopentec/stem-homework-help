@@ -4,5 +4,10 @@ url: https://stemanswered.com
 theme: minima
 permalink: pretty
 excerpt_separator: ""
+header_pages:
+  - math.md
+  - physics.md
+  - chemistry.md
+  - stats.md
 plugins:
   - jekyll-sitemap
