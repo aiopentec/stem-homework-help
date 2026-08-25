@@ -1,0 +1,9 @@
+[
+  {
+    "question_id": 123456,
+    "status": "rejected",
+    "reason": "verification_failed",
+    "score": 61,
+    "date": "2026-08-25"
+  }
+]
