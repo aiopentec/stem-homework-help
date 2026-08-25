@@ -1,0 +1,13 @@
+math:
+  calculus:
+    - title: "Calculus Study Resource"
+      type: textbook
+      url: ""
+      disclosure_required: true
+
+stats:
+  regression:
+    - title: "Regression Study Resource"
+      type: textbook
+      url: ""
+      disclosure_required: true
