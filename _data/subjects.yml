@@ -1,0 +1,27 @@
+math:
+  name: Mathematics
+  slug: math
+  description: >
+    Worked mathematics problems covering algebra, calculus, geometry,
+    probability, linear algebra and related topics.
+
+physics:
+  name: Physics
+  slug: physics
+  description: >
+    Worked physics problems covering mechanics, electricity, waves,
+    thermodynamics and related topics.
+
+chemistry:
+  name: Chemistry
+  slug: chemistry
+  description: >
+    Worked chemistry problems covering organic, inorganic,
+    physical chemistry and related topics.
+
+stats:
+  name: Statistics
+  slug: statistics
+  description: >
+    Worked statistics problems covering probability, regression,
+    inference, distributions and related topics.
