@@ -1,13 +1,82 @@
-title: STEM Homework Help
-description: Worked solutions to unanswered math, physics, chemistry, and statistics problems
+title: STEM Answered
+
+description: >
+  Clear, worked solutions to real mathematics, physics, chemistry,
+  and statistics questions.
+
 url: https://stemanswered.com
+baseurl: ""
+
 theme: minima
+
 permalink: pretty
+
 excerpt_separator: ""
+
+timezone: UTC
+
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  math_engine: mathjax
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+collections:
+  topics:
+    output: true
+    permalink: /topics/:name/
+
+  concepts:
+    output: true
+    permalink: /concepts/:name/
+
+  guides:
+    output: true
+    permalink: /guides/:name/
+
+defaults:
+
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: question
+
+  - scope:
+      path: ""
+      type: topics
+    values:
+      layout: topic
+
+  - scope:
+      path: ""
+      type: concepts
+    values:
+      layout: concept
+
+  - scope:
+      path: ""
+      type: guides
+    values:
+      layout: guide
+
 header_pages:
   - math.md
   - physics.md
   - chemistry.md
   - stats.md
-plugins:
-  - jekyll-sitemap
+  - topics.md
+  - concepts.md
+
+exclude:
+  - scripts/
+  - tests/
+  - state/
+  - "*.py"
+  - "*.json"
+  - Gemfile
+  - Gemfile.lock
