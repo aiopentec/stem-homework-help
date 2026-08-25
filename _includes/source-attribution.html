@@ -1,0 +1,23 @@
+{% if page.source.url %}
+
+<section class="source-attribution">
+
+  <h2>Original Question</h2>
+
+  <p>
+    This problem was originally posted on
+    <a href="{{ page.source.url }}">
+      {{ page.source.site }}
+    </a>.
+  </p>
+
+  {% if page.source.license %}
+    <p>
+      The original question is provided under
+      {{ page.source.license }}.
+    </p>
+  {% endif %}
+
+</section>
+
+{% endif %}
