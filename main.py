@@ -79,7 +79,7 @@ def get_unanswered_questions(site, exclude_ids, limit=20):
     url = "https://api.stackexchange.com/2.3/questions/unanswered"
     params = {
         "order": "desc",
-        "sort": "votes",
+        "sort": "creation",
         "site": site,
         "filter": "withbody",
         "pagesize": limit,
