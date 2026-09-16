@@ -2,7 +2,31 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- seo -%}
+    {%- seo -%}
+  {%- if page.layout == "question" -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "QAPage",
+        "mainEntity": {
+          "@type": "Question",
+          "name": {{ page.title | jsonify }},
+          "text": {{ page.description | default: page.title | jsonify }},
+          "answerCount": 1,
+          "dateCreated": {{ page.date | date_to_xmlschema | jsonify }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ page.content | strip_html | strip_newlines | truncate: 500 | jsonify }},
+            "dateCreated": {{ page.date | date_to_xmlschema | jsonify }},
+            "author": {
+              "@type": "Organization",
+              "name": {{ page.author | jsonify }}
+            }
+          }
+        }
+      }
+    </script>
+  {%- endif -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
