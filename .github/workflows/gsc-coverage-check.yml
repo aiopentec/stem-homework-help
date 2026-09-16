@@ -1,0 +1,40 @@
+name: GSC Coverage Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install google-auth google-auth-httplib2 google-api-python-client requests
+
+      - name: Write service account key to file
+        run: echo '${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: Run coverage check
+        run: |
+          python gsc_coverage_buckets.py \
+            --site https://stemanswered.com/ \
+            --sitemap https://stemanswered.com/sitemap.xml \
+            --creds service_account.json
+
+      - name: Clean up credential file
+        if: always()
+        run: rm -f service_account.json
+
+      - name: Upload CSV artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gsc-coverage-buckets
+          path: gsc_coverage_buckets.csv
