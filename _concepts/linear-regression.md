@@ -13,7 +13,7 @@ Linear regression fits a straight line (or hyperplane, with multiple predictors)
 
 ## What is linear regression?
 
-Linear regression fits a straight line (or hyperplane, with multiple predictors) that best predicts a continuous outcome variable from one or more input variables, by minimizing the sum of squared errors between predicted and actual values.
+It's the standard starting point for modeling a numeric outcome: given data on an input and an output, linear regression finds the line that comes closest, on average, to every point in the dataset, then uses that line's equation to predict outcomes for new inputs.
 
 ## Basic formula
 

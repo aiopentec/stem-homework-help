@@ -11,9 +11,9 @@ description: >
 
 An integral accumulates infinitesimal contributions of a quantity to find a total — most commonly, the area under a curve. The definite integral of a function over an interval gives a single number; the indefinite integral gives a family of antiderivative functions.
 
-## What is integrals?
+## What is an integral?
 
-An integral accumulates infinitesimal contributions of a quantity to find a total — most commonly, the area under a curve. The definite integral of a function over an interval gives a single number; the indefinite integral gives a family of antiderivative functions.
+Integration is the reverse operation of differentiation: where a derivative breaks a function down into its instantaneous rate of change, an integral builds a total back up from that rate, either as a running accumulation (indefinite) or a specific measured quantity over an interval (definite).
 
 ## Basic formula
 

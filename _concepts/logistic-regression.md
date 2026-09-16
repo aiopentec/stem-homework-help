@@ -13,7 +13,7 @@ Logistic regression predicts the probability of a binary outcome (e.g., yes/no, 
 
 ## What is logistic regression?
 
-Logistic regression predicts the probability of a binary outcome (e.g., yes/no, pass/fail) by applying the logistic (sigmoid) function to a linear combination of predictors, mapping any real number to a value between 0 and 1.
+Unlike linear regression, which predicts an unbounded numeric value, logistic regression is built specifically for classification: it squashes its output through the sigmoid function so the result always lands between 0 and 1 and can be read directly as a probability.
 
 ## Basic formula
 

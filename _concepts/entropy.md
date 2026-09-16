@@ -13,7 +13,7 @@ Entropy quantifies how unpredictable a random variable is — a distribution con
 
 ## What is entropy?
 
-Entropy quantifies how unpredictable a random variable is — a distribution concentrated on one outcome has low entropy, while a uniform distribution over many outcomes has high entropy.
+Entropy comes from information theory and can be read as the average number of bits needed to describe the outcome of a random variable: a predictable variable needs very little information to describe, while a highly uncertain one needs more.
 
 ## Basic formula
 

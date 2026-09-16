@@ -13,7 +13,7 @@ Probability assigns a number between 0 and 1 to an event, representing how likel
 
 ## What is probability?
 
-Probability assigns a number between 0 and 1 to an event, representing how likely that event is to occur, where 0 means impossible and 1 means certain.
+It's the mathematical language for describing uncertainty: rather than saying an outcome simply "might" happen, probability lets you assign it a precise number, combine it with other probabilities, and reason formally about likely and unlikely outcomes.
 
 ## Basic formula
 
