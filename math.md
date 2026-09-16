@@ -5,6 +5,16 @@ permalink: /math/
 subject: math
 ---
 
+<section class="topic-links">
+  <h2>Browse by topic</h2>
+  <ul>
+    {% assign subject_topics = site.topics | where: "subject", page.subject %}
+    {% for topic in subject_topics %}
+      <li><a href="{{ topic.url | relative_url }}">{{ topic.title }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+
 <ul class="post-list">
 {% for post in site.categories.math %}
   <li{% if forloop.index > 20 %} class="hidden-post"{% endif %}>
